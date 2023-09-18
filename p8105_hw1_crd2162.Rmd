@@ -11,9 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Problem 1
 
 
-```{r}
+```{r open_libraries_and_data}
 library (moderndive)
-library (tidyverse)
 data ("early_january_weather")
 ```
 
@@ -21,7 +20,7 @@ The dataset early_january_weather contains early January hourly weather data for
 
 We will be analyzing the variables of temp, time_hour, and humid. Their values are as follows:
 
-```{r}
+```{r variable_values}
 early_january_weather$temp
 early_january_weather$time_hour
 early_january_weather$humid
@@ -31,7 +30,8 @@ The mean temperature in our dataset is `r mean(early_january_weather$temp)`
 
 Now we will make a scatterplot comparing temp and time_hour with color points indicating humidity:
 
-```{r}
+```{r scatterplot_weather}
+library (tidyverse)
 plot_weather = tibble(
   x = early_january_weather$time_hour,
   y = early_january_weather$temp
@@ -40,16 +40,39 @@ plot_weather = tibble(
 ggplot(plot_weather, aes(x = x, y = y, color = early_january_weather$humid)) + geom_point()
 ```
 
+The scatterplot shows that the recorded temperature tended to increase overtime between January 1 and January 15. The humidity level also tended to be higher towards the end of the study period compared to the beginning of the study period.
 
+The chunk below exports the scatterplot to my project directory.
 
+```{r save_scatterplot}
+ggsave
+```
 
 
 ## Problem 2
 
+The following chunk creates a dataframe comprised of a random sample of size 10 from a standard Normal distribution, a logical vector indicating whether elements of the sample are greater than 0, a character vector of length 10, and a factor vector of length 10, with 3 different factor levels.
 
+```{r create_df}
+library (tidyverse)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+p2_df = tibble(
+  norm_samp = rnorm(10),
+  norm_samp_pos = norm_samp > 0,
+  char_vec = c("low", "low", "low", "medium", "medium", "medium", "medium", "high", "high", "high"),
+  factor_vec = factor(char_vec, levels = c("low", "medium", "high"))
+)
 ```
+
+The mean of variable norm_samp from the dataframe p2_df is `r mean(p2_df$norm_samp`. The mean of variable norm_samp_pos from the dataframe p2_df is `r mean(p2_df$norm_samp_pos)`. After attempting to take the mean of char_vec and factor_vec, the output returned was NA because the argument was not numeric or logical. It appears that you cannot take the mean of a character vector or factor vector.
+
+```{r conver_variables, echo=FALSE}
+as.numeric(p2_df$norm_samp_pos)
+as.numeric(p2_df$char_vec)
+as.numeric(p2_df$factor_vec)
+```
+
+When attempting to convert the variables in the code chunk above, the logical vector and factor vector both returned valid results. The logical vector converted to observations of 1s or 0s, and the factor vector converted to observations of 1s, 2s, or 3s. However, the character vector returned a series of NAs that were introduced by coercion. This is because R does not know the difference between the characters in the character vector. We use the factor vector to help R understand what the different levels of the categorical variable are. 
+
 
 
