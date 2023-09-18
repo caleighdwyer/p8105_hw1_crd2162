@@ -8,22 +8,48 @@ date: "2023-09-18"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Problem 1
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library (moderndive)
+library (tidyverse)
+data ("early_january_weather")
 ```
 
-## Including Plots
+The dataset early_january_weather contains early January hourly weather data for LGA, JFK, and EWR for the month of January 2013. The dataset contains `r ncol(early_january_weather)` variables and `r nrow(early_january_weather)` rows of observations. The variables included in the dataset are `r colnames(early_january_weather)`.
 
-You can also embed plots, for example:
+We will be analyzing the variables of temp, time_hour, and humid. Their values are as follows:
+
+```{r}
+early_january_weather$temp
+early_january_weather$time_hour
+early_january_weather$humid
+```
+
+The mean temperature in our dataset is `r mean(early_january_weather$temp)`
+
+Now we will make a scatterplot comparing temp and time_hour with color points indicating humidity:
+
+```{r}
+plot_weather = tibble(
+  x = early_january_weather$time_hour,
+  y = early_january_weather$temp
+  )
+
+ggplot(plot_weather, aes(x = x, y = y, color = early_january_weather$humid)) + geom_point()
+```
+
+
+
+
+
+## Problem 2
+
+
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
