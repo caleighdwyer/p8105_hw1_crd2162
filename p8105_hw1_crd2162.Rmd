@@ -1,6 +1,7 @@
 ---
 title: "p8105_hw1_crd2162"
 output: github_document
+author: Caleigh Dwyer
 date: "2023-09-18"
 ---
 
@@ -16,19 +17,13 @@ library (moderndive)
 data ("early_january_weather")
 ```
 
-The dataset early_january_weather contains early January hourly weather data for LGA, JFK, and EWR for the month of January 2013. The dataset contains `r ncol(early_january_weather)` variables and `r nrow(early_january_weather)` rows of observations. The variables included in the dataset are `r colnames(early_january_weather)`.
+The dataset early_january_weather contains early January weather data for LGA, JFK, and EWR airports from 2013. The dataset contains `r ncol(early_january_weather)` variables and `r nrow(early_january_weather)` rows of observations. The variables included in the dataset are `r colnames(early_january_weather)`.
 
-We will be analyzing the variables of temp, time_hour, and humid. Their values are as follows:
+We will be analyzing the variables of temp (temperature, measured in farenheit), time_hour (date and time of observation, recorded every two hours from January 1 to January 15), and humid (relative humidity level).
 
-```{r variable_values}
-early_january_weather$temp
-early_january_weather$time_hour
-early_january_weather$humid
-```
+The mean temperature in our dataset is `r mean(early_january_weather$temp)`. The mean humidity level in our dataset is `r mean(early_january_weather$humid)`.
 
-The mean temperature in our dataset is `r mean(early_january_weather$temp)`
-
-Now we will make a scatterplot comparing temp and time_hour with color points indicating humidity:
+Now we will make a scatterplot comparing temp and time_hour with the color of the points indicating humidity:
 
 ```{r scatterplot_weather}
 library (tidyverse)
@@ -54,8 +49,6 @@ ggsave
 The following chunk creates a dataframe comprised of a random sample of size 10 from a standard Normal distribution, a logical vector indicating whether elements of the sample are greater than 0, a character vector of length 10, and a factor vector of length 10, with 3 different factor levels.
 
 ```{r create_df}
-library (tidyverse)
-
 p2_df = tibble(
   norm_samp = rnorm(10),
   norm_samp_pos = norm_samp > 0,
@@ -64,15 +57,15 @@ p2_df = tibble(
 )
 ```
 
-The mean of variable norm_samp from the dataframe p2_df is `r mean(p2_df$norm_samp`. The mean of variable norm_samp_pos from the dataframe p2_df is `r mean(p2_df$norm_samp_pos)`. After attempting to take the mean of char_vec and factor_vec, the output returned was NA because the argument was not numeric or logical. It appears that you cannot take the mean of a character vector or factor vector.
+The mean of variable norm_samp from the dataframe p2_df is `r mean(p2_df$norm_samp)`. The mean of variable norm_samp_pos from the dataframe p2_df is `r mean(p2_df$norm_samp_pos)`. After attempting to take the mean of char_vec and factor_vec, the output returned was NA because the argument was not numeric or logical. It appears that you cannot take the mean of a character vector or factor vector.
 
-```{r conver_variables, echo=FALSE}
+```{r convert_variables, eval=FALSE}
 as.numeric(p2_df$norm_samp_pos)
 as.numeric(p2_df$char_vec)
 as.numeric(p2_df$factor_vec)
 ```
 
-When attempting to convert the variables in the code chunk above, the logical vector and factor vector both returned valid results. The logical vector converted to observations of 1s or 0s, and the factor vector converted to observations of 1s, 2s, or 3s. However, the character vector returned a series of NAs that were introduced by coercion. This is because R does not know the difference between the characters in the character vector. We use the factor vector to help R understand what the different levels of the categorical variable are. 
+When attempting to convert the variables in the code chunk above, the logical vector and factor vector both returned valid results. The logical vector converted to observations of 1s or 0s, and the factor vector converted to observations of 1s, 2s, or 3s. However, the character vector returned a series of NAs that were introduced by coercion. This is because R does not know the difference between the characters in the character vector. We use the factor vector to help R understand what the different levels of the categorical variable are. This helps explain why we were unable to take the mean of the character vector, because there is no inherent value to the observations in the character vector from which we can find a mean value. Now that we have converted the factor vector into numeric levels, we should be able to find a mean value.
 
 
 
