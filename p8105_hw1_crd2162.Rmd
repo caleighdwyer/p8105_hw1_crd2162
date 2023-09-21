@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r open_libraries_and_data}
 library (moderndive)
+library (tidyverse)
 data ("early_january_weather")
 ```
 
@@ -26,7 +27,6 @@ The mean temperature in our dataset is `r mean(early_january_weather$temp)`. The
 Now we will make a scatterplot comparing temp and time_hour with the color of the points indicating humidity:
 
 ```{r scatterplot_weather}
-library (tidyverse)
 plot_weather = tibble(
   x = early_january_weather$time_hour,
   y = early_january_weather$temp
@@ -39,7 +39,7 @@ The scatterplot shows that the recorded temperature tended to increase overtime 
 
 The chunk below exports the scatterplot to my project directory.
 
-```{r save_scatterplot}
+```{r save_scatterplot, results = "hide"}
 ggsave
 ```
 
@@ -55,14 +55,25 @@ p2_df = tibble(
   char_vec = c("low", "low", "low", "medium", "medium", "medium", "medium", "high", "high", "high"),
   factor_vec = factor(char_vec, levels = c("low", "medium", "high"))
 )
+
+
 ```
 
-The mean of variable norm_samp from the dataframe p2_df is `r mean(p2_df$norm_samp)`. The mean of variable norm_samp_pos from the dataframe p2_df is `r mean(p2_df$norm_samp_pos)`. After attempting to take the mean of char_vec and factor_vec, the output returned was NA because the argument was not numeric or logical. It appears that you cannot take the mean of a character vector or factor vector.
+The following code chunk yields the mean of variable norm_samp from the dataframe p2_df and the mean of variable norm_samp_pos from the dataframe p2_df:
 
+```{r find_mean}
+mean(pull(p2_df,norm_samp))
+
+mean(pull(p2_df,norm_samp_pos))
+```
+
+After attempting to take the mean of char_vec and factor_vec, the output returned was NA because the argument was not numeric or logical. It appears that you cannot take the mean of a character vector or factor vector.
+
+The following code chunk attempts to convert the vectors from p2_df to numeric.
 ```{r convert_variables, eval=FALSE}
-as.numeric(p2_df$norm_samp_pos)
-as.numeric(p2_df$char_vec)
-as.numeric(p2_df$factor_vec)
+as.numeric(pull(p2_df, norm_samp_pos))
+as.numeric(pull(p2_df, char_vec))
+as.numeric(pull(p2_df, factor_vec))
 ```
 
 When attempting to convert the variables in the code chunk above, the logical vector and factor vector both returned valid results. The logical vector converted to observations of 1s or 0s, and the factor vector converted to observations of 1s, 2s, or 3s. However, the character vector returned a series of NAs that were introduced by coercion. This is because R does not know the difference between the characters in the character vector. We use the factor vector to help R understand what the different levels of the categorical variable are. This helps explain why we were unable to take the mean of the character vector, because there is no inherent value to the observations in the character vector from which we can find a mean value. Now that we have converted the factor vector into numeric levels, we should be able to find a mean value.
